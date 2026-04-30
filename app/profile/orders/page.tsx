@@ -21,20 +21,24 @@ interface Order {
 }
 
 export default function OrdersPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth(); // ✅ Get loading state
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [ordersLoading, setOrdersLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-      return;
+    // ✅ Wait for auth to finish loading before checking user
+    if (!loading) {
+      if (!user) {
+        router.push("/login");
+      } else {
+        fetchOrders();
+      }
     }
-    fetchOrders();
-  }, [user]);
+  }, [user, loading]); // ✅ Depend on both user and loading
 
   const fetchOrders = async () => {
+    setOrdersLoading(true);
     try {
       const res = await fetch("/api/orders");
       const data = await res.json();
@@ -42,7 +46,7 @@ export default function OrdersPage() {
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
-      setLoading(false);
+      setOrdersLoading(false);
     }
   };
 
@@ -59,12 +63,18 @@ export default function OrdersPage() {
     }
   };
 
-  if (loading) {
+  // ✅ Show loading while auth is being checked
+  if (loading || ordersLoading) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#e8b924] mx-auto"></div>
       </div>
     );
+  }
+
+  // ✅ If not loading and no user, don't render (will redirect)
+  if (!user) {
+    return null;
   }
 
   return (

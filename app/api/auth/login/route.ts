@@ -43,10 +43,9 @@ export async function POST(request: Request) {
       role: user.role,
     });
 
-    // Set cookie
-    (await
-          // Set cookie
-          cookies()).set({
+    // ✅ FIXED: Set cookie properly
+    const cookieStore = await cookies();
+    cookieStore.set({
       name: "auth_token",
       value: token,
       httpOnly: true,

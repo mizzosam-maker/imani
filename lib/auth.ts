@@ -26,7 +26,7 @@ export function verifyToken(token: string): TokenPayload | null {
   }
 }
 
-export async function getAuthenticatedUser() {
+/*export async function getAuthenticatedUser() {
   try {
     const cookieStore = cookies();
     const token = (await cookieStore).get("auth_token")?.value;
@@ -45,6 +45,30 @@ export async function getAuthenticatedUser() {
     
     return user;
   } catch (error) {
+    return null;
+  }
+}*/
+
+export async function getAuthenticatedUser() {
+  try {
+    const cookieStore = await cookies(); // ✅ Always await cookies()
+    const token = cookieStore.get("auth_token")?.value;
+
+    if (!token) {
+      return null;
+    }
+
+    const payload = verifyToken(token);
+    if (!payload) {
+      return null;
+    }
+
+    await connectDB();
+    const user = await User.findById(payload.id).select("-password").lean();
+    
+    return user;
+  } catch (error) {
+    console.error("Error getting authenticated user:", error);
     return null;
   }
 }
