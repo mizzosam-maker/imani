@@ -202,8 +202,6 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ui/ProductCard";
 import { Filter, X } from "lucide-react";
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
 
 interface Product {
   _id: string;
