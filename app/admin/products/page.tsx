@@ -25,6 +25,7 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
+  const [imgErrorMap, setImgErrorMap] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (!user) {
@@ -146,22 +147,34 @@ export default function AdminProductsPage() {
             <tbody className="divide-y divide-[#d5c37d]">
               {filteredProducts.map((product) => (
                 <tr key={product._id} className="hover:bg-[#f6e9a6] transition">
-                  <td className="px-4 py-3">
-                    <div className="relative w-12 h-12 bg-[#fafaf3] rounded overflow-hidden">
-                      {product.images[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-xs text-[#4d4d4d]">
-                          No img
-                        </div>
-                      )}
-                    </div>
-                  </td>
+                <td className="px-4 py-3">
+                  <div className="relative w-12 h-12 bg-[#fafaf3] rounded overflow-hidden flex items-center justify-center">
+
+                    {!imgErrorMap[product._id] && product.images?.[0] ? (
+                      <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                        onError={() => {
+                          setImgErrorMap((prev) => ({
+                            ...prev,
+                            [product._id]: true,
+                          }));
+                        }}
+                      />
+                    ) : (
+                      <Image
+                        src="/images/placeholder.png"
+                        alt="placeholder"
+                        width={32}
+                        height={32}
+                        className="opacity-60 grayscale"
+                      />
+                    )}
+
+                  </div>
+                </td>
                   <td className="px-4 py-3 font-medium">{product.name}</td>
                   <td className="px-4 py-3">{product.category}</td>
                   <td className="px-4 py-3">KSh {product.price.toLocaleString()}</td>
