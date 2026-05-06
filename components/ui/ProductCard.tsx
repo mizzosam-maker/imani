@@ -103,7 +103,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   // Resolve initial image
   const rawImage =
     product.images && product.images.length > 0 && product.images[0]
-      ? product.images[0]
+      ? product.images[1]
       : "";
 
   const [imgSrc, setImgSrc] = useState(rawImage);
@@ -141,7 +141,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               src={imgSrc}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               unoptimized
               onError={handleImageError}

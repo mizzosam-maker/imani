@@ -258,7 +258,7 @@ export default function ProductDetailPage() {
       setProduct(data);
 
       const firstImage =
-        data?.images?.length > 0 ? data.images[0] : "";
+        data?.images?.length > 0 ? data.images[1] : "";
 
       setImgSrc(firstImage);
 
@@ -345,7 +345,7 @@ Total: KSh ${(product?.price || 0) * quantity}`;
               src={imgSrc}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-contain"
               onError={handleImageError}
             />
           ) : (
