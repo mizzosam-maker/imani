@@ -77,7 +77,7 @@ export default async function HomePage() {
       </section>
 
       {/* Featured Products */}
-      <section className="bg-[#fcf8d6] py-16">
+      {/*<section className="bg-[#fcf8d6] py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
             Featured <span className="text-[#e8b924]">Products</span>
@@ -95,6 +95,40 @@ export default async function HomePage() {
               View All Products
             </Link>
           </div>
+        </div>
+      </section>*/}
+
+      {/* Featured Products */}
+      <section className="bg-[#fcf8d6] py-10 md:py-16">
+        <div className="container mx-auto px-0 sm:px-4">
+          
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-0 md:mb-12">
+            Featured <span className="text-[#e8b924]">Products</span>
+          </h2>
+
+          {/* ✅ Responsive Product Grid */}
+          {/*<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+            {featuredProducts.map((product: any) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>*/}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6 md:gap-8 px-2 sm:px-4">
+  {featuredProducts.map((product: any) => (
+    <div key={product._id} className="p-1 sm:p-2">
+      <ProductCard product={product} />
+    </div>
+  ))}
+</div>
+
+          <div className="text-center mt-10 md:mt-12">
+            <Link
+              href="/products"
+              className="inline-block bg-[#e8b924] text-[#0e0e10] px-6 md:px-8 py-3 rounded-lg font-semibold hover:bg-[#ddc25d] transition"
+            >
+              View All Products
+            </Link>
+          </div>
+
         </div>
       </section>
 

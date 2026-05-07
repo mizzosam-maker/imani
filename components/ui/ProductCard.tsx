@@ -78,7 +78,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   );
 }*/
 
-'use client';
+/*'use client';
 
 import Link from "next/link";
 import Image from "next/image";
@@ -135,7 +135,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link href={`/products/${product._id}`}>
         <div className="relative h-64 bg-[#f6e9a6] flex items-center justify-center">
 
-          {/* ✅ Real product image */}
+          {/* ✅ Real product image *
           {isValidImage ? (
             <Image
               src={imgSrc}
@@ -147,7 +147,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               onError={handleImageError}
             />
           ) : (
-            /* ✅ Small centered placeholder */
+            /* ✅ Small centered placeholder 
             <Image
               src="/images/placeholder.png"
               alt="placeholder"
@@ -157,7 +157,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             />
           )}
 
-          {/* Low stock badge */}
+          {/* Low stock badge *
           {product.stock < 5 && (
             <span className="absolute top-2 right-2 bg-[#e8b924] text-[#0e0e10] text-xs px-2 py-1 rounded z-10">
               Low Stock
@@ -192,5 +192,133 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
     </div>
+  );
+}*/
+
+
+'use client';
+
+import Link from "next/link";
+import Image from "next/image";
+import { useCart } from "@/context/CartContext";
+import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
+
+interface ProductCardProps {
+  product: {
+    _id: string;
+    name: string;
+    price: number;
+    images: string[];
+    category: string;
+    stock: number;
+  };
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  const { addToCart } = useCart();
+
+  // Resolve initial image
+  //const rawImage =
+  //  product.images && product.images.length > 0 && product.images[1]
+  //    ? product.images[1]
+  //    : "";
+
+//  const rawImage = product.images?.[1] ?? product.images?.[1] ?? "";
+
+const rawImage =
+  product.images?.find((img) => img && img.length > 0) ||
+  "/images/placeholder.png";
+
+  const [imgSrc, setImgSrc] = useState(rawImage);
+  const [hasError, setHasError] = useState(false);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart({
+      productId: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      image: imgSrc || "/images/placeholder.png",
+    });
+  };
+
+  const handleImageError = () => {
+    if (!hasError) {
+      setHasError(true);
+      setImgSrc("/images/placeholder.png");
+    }
+  };
+
+  const isValidImage =
+    imgSrc && imgSrc !== "/images/placeholder.png";
+
+  return (
+      <div className="bg-[#fafaf3] border border-[#d5c37d] rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+
+        <Link href={`/products/${product._id}`}>
+          
+          {/* ✅ Smaller responsive image area */}
+          <div className="relative h-40 sm:h-52 md:h-64 bg-[#f6e9a6] flex items-center justify-center">
+
+            {isValidImage ? (
+              <Image
+                src={imgSrc}
+                alt={product.name}
+                fill
+                className="object-contain p-2"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                unoptimized
+                onError={handleImageError}
+              />
+            ) : (
+              <Image
+                src="/images/placeholder.png"
+                alt="placeholder"
+                width={120}
+                height={120}
+                className="opacity-60 grayscale"
+              />
+            )}
+
+            {product.stock < 5 && (
+              <span className="absolute top-2 right-2 bg-[#e8b924] text-[#0e0e10] text-[10px] sm:text-xs px-2 py-1 rounded z-10">
+                Low Stock
+              </span>
+            )}
+          </div>
+        </Link>
+
+        {/* ✅ Compact mobile spacing */}
+        <div className="p-2 sm:p-4">
+
+          <Link href={`/products/${product._id}`}>
+            <h3 className="font-semibold text-sm sm:text-lg line-clamp-2 hover:text-[#e8b924] transition min-h-[40px] sm:min-h-[56px]">
+              {product.name}
+            </h3>
+          </Link>
+
+          <p className="text-[#4d4d4d] text-xs sm:text-sm mb-2 truncate">
+            {product.category}
+          </p>
+
+          <div className="flex items-center justify-between gap-2">
+
+            <span className="text-sm sm:text-xl font-bold text-[#e8b924]">
+              KSh {product.price.toLocaleString()}
+            </span>
+
+            <button
+              onClick={handleAddToCart}
+              className="bg-[#e8b924] text-[#0e0e10] p-2 rounded-full hover:bg-[#ddc25d] transition disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={product.stock === 0}
+            >
+              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+
+          </div>
+        </div>
+      </div>
   );
 }

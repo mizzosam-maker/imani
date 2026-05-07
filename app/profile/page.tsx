@@ -295,18 +295,18 @@ export default function ProfilePage() {
         </div>
 
         {/* Main Content */}
-        <div className="md:col-span-2">
+        {/*<div className="md:col-span-2">
           <div className="bg-[#fcf8d6] p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-6">Edit Profile</h2>
 
-            {/* Success Message */}
+            {/* Success Message *
             {success && (
               <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-4">
                 Profile updated successfully!
               </div>
             )}
 
-            {/* Error Message */}
+            {/* Error Message *
             {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
                 {error}
@@ -314,7 +314,7 @@ export default function ProfilePage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name Field */}
+              {/* Name Field *
               <div>
                 <label htmlFor="name" className="block font-medium mb-2">
                   Full Name
@@ -332,7 +332,7 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Email Field (Read-only) */}
+              {/* Email Field (Read-only) *
               <div>
                 <label htmlFor="email" className="block font-medium mb-2">
                   Email Address
@@ -352,7 +352,7 @@ export default function ProfilePage() {
                 </p>
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Button *
               <button
                 type="submit"
                 disabled={loading}
@@ -377,8 +377,91 @@ export default function ProfilePage() {
                 <span className="capitalize">{user.role || "User"}</span>
               </div>
             </div>
-          </div>*/}
+          </div>*
+        </div>*/}
+{/* Main Content */}
+<div className="md:col-span-2">
+  <div className="bg-[#fcf8d6] rounded-lg p-4 sm:p-5 md:p-6">
+    
+    {/* Header */}
+    <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">
+      Edit Profile
+    </h2>
+
+    {/* Success Message */}
+    {success && (
+      <div className="bg-green-100 border border-green-400 text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded-lg mb-4 text-sm sm:text-base">
+        Profile updated successfully!
+      </div>
+    )}
+
+    {/* Error Message */}
+    {error && (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded-lg mb-4 text-sm sm:text-base">
+        {error}
+      </div>
+    )}
+
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
+
+      {/* Name Field */}
+      <div>
+        <label htmlFor="name" className="block font-medium mb-1 sm:mb-2 text-sm sm:text-base">
+          Full Name
+        </label>
+
+        <div className="relative">
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#4d4d4d]" />
+
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={(e) =>
+              setFormData({ ...formData, name: e.target.value })
+            }
+            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base border border-[#d5c37d] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e8b924] bg-[#fafaf3]"
+            required
+          />
         </div>
+      </div>
+
+      {/* Email Field */}
+      <div>
+        <label htmlFor="email" className="block font-medium mb-1 sm:mb-2 text-sm sm:text-base">
+          Email Address
+        </label>
+
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-[#4d4d4d]" />
+
+          <input
+            type="email"
+            id="email"
+            value={user.email}
+            disabled
+            className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base border border-[#d5c37d] rounded-lg bg-[#f0f0e8] cursor-not-allowed text-[#4d4d4d]"
+          />
+        </div>
+
+        <p className="text-xs sm:text-sm text-[#4d4d4d] mt-1">
+          Email cannot be changed. Contact support if you need to update it.
+        </p>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-[#e8b924] text-[#0e0e10] py-2 sm:py-3 rounded-lg font-semibold hover:bg-[#ddc25d] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 text-sm sm:text-base"
+      >
+        <Save className="w-4 h-4 sm:w-5 sm:h-5" />
+        <span>{loading ? "Saving..." : "Save Changes"}</span>
+      </button>
+
+    </form>
+  </div>
+</div>
       </div>
     </div>
   );
